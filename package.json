@@ -1,0 +1,20 @@
+{
+  "name": "kata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://awestmeyer@git.healthgrades.com/awestmeyer/kata.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lodash.first": "^3.0.0",
+    "lodash.rest": "^4.0.5",
+    "lodash.zip": "^4.2.0"
+  }
+}
