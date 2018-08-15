@@ -144,7 +144,7 @@ module.exports = (width, props) => {
       const tName = TYPES[type];
       const prop = getProp(tName);
       const value = props[prop];
-      return value ? accum : { ...accum, ...addStyle(tName, value) };
+      return !value ? accum : { ...accum, ...addStyle(tName, value) };
     },
     { ...base() }
   );
