@@ -1,0 +1,44 @@
+@startuml SDK Platform Experience
+
+actor user as "Tool Writer"
+participant sdk as "SDK Tooling"
+participant dwf as "Designer"
+participant ext_ui as "Extension Service UI"
+participant ext_svc as "Extension Service"
+participant assets_svc as "Asset Manager"
+participant eaas as "Engine as a Service"
+participant kub as "Kubernetes API"
+participant worker as "Engine Worker"
+
+user -> sdk: Creates a YXPE
+user -> ext_ui: Upload YXPE
+ext_ui -> ext_svc: Upload YXPE binary
+ext_svc -> assets_svc: Save Asset
+assets_svc -> ext_svc: Saved
+ext_svc -> ext_ui: Response(400)
+ext_ui -> user: "Upload Successful"
+
+user -> dwf: Login
+dwf -> ext_svc: Ask for available Tools
+ext_svc -> dwf: Provide available external tools
+
+user -> dwf: See SDK Tool and load it on the canvas
+dwf -> ext_svc: get the UI bundle for User display
+ext_svc -> dwf: Provides React bundle to the browser
+user -> dwf: Interacts with Tool Configuration
+
+user -> dwf: Press the Run Button
+dwf -> eaas: Send Workflow for Processing
+eaas -> ext_svc: Read manifest from YXPE
+ext_svc -> eaas: Python version, location of main.pyz
+eaas -> kub: Create Pod Definition, Start
+kub -> ext_svc: Read Pod Definition, Start tool service containers
+kub -> worker: AMP Worker Pod
+worker -> assets_svc: Get Data
+assets_svc -> worker: Process Data
+worker -> kub: Finish
+kub -> eaas: Finish
+eaas -> dwf: Finish
+dwf -> user: View Data
+
+@enduml

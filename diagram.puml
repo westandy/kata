@@ -1,0 +1,52 @@
+@startuml Node SDK
+' definitions
+together {
+  package "SDK Engine Plugin (C++)" #85A7DF {
+    package "gRPC Engine Service" {}
+    package "gRPC Tool Client" {}
+  }
+
+  package "Test Harness" #85A7DF {
+    package "Mock gRPC Engine Service" {}
+    package "Mock gRPC Tool Client" {}
+  }
+}
+
+package "Node Process" #85A7DF {
+  package "index.js" {}
+  package "gRPC Tool Service" {}
+  package "gRPC Egine Client" {}
+  package "AMP Driver" {}
+  package "Common Architecture" #FFF {
+    package "AMP Provider" {}
+  }
+  package "Utils" #FFF {
+    package "Builders" {}
+    package "Converters" {}
+    package "Data Cache" {}
+    package "Other" {}
+  }
+}
+package "User Plugin"  #D38C85 {}
+
+' connections
+"gRPC Tool Client" --> "gRPC Tool Service" : Send data
+"gRPC Engine Service" <-- "gRPC Egine Client" : Send data
+"Mock gRPC Tool Client" --> "gRPC Tool Service" : Send data
+"Mock gRPC Engine Service" <-- "gRPC Egine Client" : Send data
+"index.js" --> "gRPC Tool Service" : Creates
+"gRPC Tool Service" --> "gRPC Egine Client" : Uses
+"gRPC Egine Client" --> "Utils" : Uses
+"gRPC Tool Service" --> "AMP Driver" : Creates & Uses
+"AMP Driver" --> "User Plugin" : Creates & Uses
+"User Plugin" --> "AMP Provider" : Creates & Uses
+"AMP Provider" --> "gRPC Egine Client" : Creates & Uses
+
+' layout
+"Node Process" -[hidden]right-> "User Plugin"
+"AMP Driver" -[hidden]down-> "Common Architecture"
+"gRPC Tool Client" -[hidden]right-> "index.js"
+
+' style
+skinparam packageStyle rectangle
+@enduml
